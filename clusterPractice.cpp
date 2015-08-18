@@ -42,9 +42,12 @@ int main(){
   vector<vector<int> > tRate;
   vector<int> a;
   tRate.push_back(a);
-  Mat in = imread("../Lena.png", CV_LOAD_IMAGE_GRAYSCALE);
+  Mat in = imread("../AFoil_1.png", CV_LOAD_IMAGE_GRAYSCALE);
+
   const int channels = 0;
   const int histSize = 10;
+  float inner[2] = {0, 10000};
+  const float* holder= {inner};
 
   Mat test1 = reshapeCol(in);
   for(int j=1;j<10;j++){
@@ -56,19 +59,23 @@ int main(){
       BOWKMeansTrainer bowTrainer1(dictSize, tc, attempts, flags);
 
       bowTrainer.add(test1);
+      bowTrainer.add(test1);
+      bowTrainer.add(test1);
+      bowTrainer.add(test1);
+      bowTrainer.add(test1);
       Mat output = bowTrainer.cluster();
       bowTrainer.clear();
 
       bowTrainer1.add(test1);
       Mat output1 = bowTrainer1.cluster();
       bowTrainer1.clear();
+
       Mat out, out1;
-      float inner[2] = {0, 10000};
-      const float* holder= {inner};
       calcHist(&output, 1, &channels, Mat(), out, 1, &histSize, &holder, true, false);
       calcHist(&output1, 1, &channels, Mat(), out1, 1, &histSize, &holder, true, false);
 
       double distance = compareHist(out, out1,CV_COMP_CHISQR);
+
       cout << "This is the similarity: " << distance << endl;
       if(distance == 0){
         tRate[j].push_back(1);
