@@ -32,23 +32,48 @@ int main(){
   cout << "Start.." << endl;
   // Cluster the same image in a stack then on it's own and compare results
 
-  Mat in = imread("../Lena.png", CV_LOAD_IMAGE_GRAYSCALE);
-  Mat test1 = reshapeCol(in);
+  int numIterations = 5;
 
-  int dictSize = 10;
+
   int attempts = 10;
   int flags = KMEANS_PP_CENTERS;
   TermCriteria tc(TermCriteria::MAX_ITER + TermCriteria::EPS, 1000, 0.0001);
 
-  BOWKMeansTrainer bowTrainer(dictSize, tc, attempts, flags);
-  bowTrainer.add(test1);
-  Mat output = bowTrainer.cluster();
-  cout << "These are the clusters: " << output << endl;
+  vector<vector<int> > tRate;
+  vector<int> a;
+  tRate.push_back(a);
+  Mat in = imread("../Lena.png", CV_LOAD_IMAGE_GRAYSCALE);
+  const int channels = 0;
+  const int histSize = 10;
 
-  BOWKMeansTrainer bowTrainer1(dictSize, tc, attempts, flags);
-  bowTrainer1.add(test1);
-  Mat output1 = bowTrainer1.cluster();
-  cout << "These are the clusters: " << output1 << endl;
+  Mat test1 = reshapeCol(in);
+  for(int j=1;j<10;j++){
+    tRate.push_back(a);
+    cout << "Finding: " << j << " Clusters." << endl;
+    int dictSize = j;
+    for(int i=0;i<numIterations;i++){
+      BOWKMeansTrainer bowTrainer(dictSize, tc, attempts, flags);
+      BOWKMeansTrainer bowTrainer1(dictSize, tc, attempts, flags);
 
+      bowTrainer.add(test1);
+      Mat output = bowTrainer.cluster();
+      bowTrainer.clear();
+
+      bowTrainer1.add(test1);
+      Mat output1 = bowTrainer1.cluster();
+      bowTrainer1.clear();
+      Mat out, out1;
+      float inner[2] = {0, 10000};
+      const float* holder= {inner};
+      calcHist(&output, 1, &channels, Mat(), out, 1, &histSize, &holder, true, false);
+      calcHist(&output1, 1, &channels, Mat(), out1, 1, &histSize, &holder, true, false);
+
+      double distance = compareHist(out, out1,CV_COMP_CHISQR);
+      cout << "This is the similarity: " << distance << endl;
+      if(distance == 0){
+        tRate[j].push_back(1);
+      }
+    }
+  }
   return 0;
 }
