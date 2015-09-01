@@ -15,72 +15,60 @@
 using namespace cv;
 using namespace std;
 
-Mat reshapeCol(Mat in){
-  Mat points(in.rows*in.cols, 1,CV_32F);
-  int cnt = 0;
-  for(int i =0;i<in.rows;i++){
-    for(int j=0;j<in.cols;j++){
-      points.at<float>(cnt, 0) = in.at<Vec3b>(i,j)[0];
-      cnt++;
-    }
-  }
-  return points;
-}
-
 
 int main(){
   cout << "Start.." << endl;
-  // Cluster the same image in a stack then on it's own and compare results
 
-  int numIterations = 5;
-
-
-  int attempts = 10;
-  int flags = KMEANS_PP_CENTERS;
-  TermCriteria tc(TermCriteria::MAX_ITER + TermCriteria::EPS, 1000, 0.0001);
-
-  vector<vector<int> > tRate;
-  vector<int> a;
-  tRate.push_back(a);
-  Mat in = imread("../AFoil_1.png", CV_LOAD_IMAGE_GRAYSCALE);
-
-  const int channels = 0;
-  const int histSize = 10;
-  float inner[2] = {0, 10000};
-  const float* holder= {inner};
-
-  Mat test1 = reshapeCol(in);
-  for(int j=1;j<10;j++){
-    tRate.push_back(a);
-    cout << "Finding: " << j << " Clusters." << endl;
-    int dictSize = j;
-    for(int i=0;i<numIterations;i++){
-      BOWKMeansTrainer bowTrainer(dictSize, tc, attempts, flags);
-      BOWKMeansTrainer bowTrainer1(dictSize, tc, attempts, flags);
-
-      bowTrainer.add(test1);
-      bowTrainer.add(test1);
-      bowTrainer.add(test1);
-      bowTrainer.add(test1);
-      bowTrainer.add(test1);
-      Mat output = bowTrainer.cluster();
-      bowTrainer.clear();
-
-      bowTrainer1.add(test1);
-      Mat output1 = bowTrainer1.cluster();
-      bowTrainer1.clear();
-
-      Mat out, out1;
-      calcHist(&output, 1, &channels, Mat(), out, 1, &histSize, &holder, true, false);
-      calcHist(&output1, 1, &channels, Mat(), out1, 1, &histSize, &holder, true, false);
-
-      double distance = compareHist(out, out1,CV_COMP_CHISQR);
-
-      cout << "This is the similarity: " << distance << endl;
-      if(distance == 0){
-        tRate[j].push_back(1);
-      }
-    }
+  VideoCapture cap;
+  cap.open("../testVid.mp4");
+  if(!cap.isOpened()){
+    cout << "video unable to be opened. Exiting.." << endl;
+    exit(1);
   }
+
+
+  vector<Mat> store;
+  Mat img;
+  namedWindow("CurrentImg", CV_WINDOW_AUTOSIZE);
+  namedWindow("FrameCount", CV_WINDOW_AUTOSIZE);
+  int w_width = 200;
+  int w_height = 75;
+
+  for(int i=0;i<cap.get(CV_CAP_PROP_FRAME_COUNT);i++){
+    cap >> img;
+    Mat frame = Mat(w_height, w_width, CV_8UC3, Scalar(255,255,255));
+
+    double fnum = cap.get(CV_CAP_PROP_POS_FRAMES);
+
+    stringstream ss;
+    ss << "Frame: " << fnum;
+    Size textsize = getTextSize(ss.str(), FONT_HERSHEY_SCRIPT_SIMPLEX, 1, 2, 0);
+    Point org((w_width - textsize.width)/2, (w_height - textsize.height)/2+20);
+    putText(frame, ss.str(), org, CV_FONT_HERSHEY_COMPLEX, 1, Scalar(0, 0, 0), 2, 8 );
+
+    imshow("FrameCount", frame);
+    imshow("CurrentImg", img);
+    cout << "This is the size: " << img.size() << " and i count: " << i << endl;
+    char c = waitKey(30000);
+    if(c=='s'){
+      store.push_back(img.clone());
+    }else if(c=='q'){
+      break;
+    }
+ }
+
+  cout << "what is the name of that class? " << endl;
+  string clsnme;
+  cin >> clsnme;
+  cout << "This was the class name: " << clsnme << endl;
+
+ for(int i=0;i<store.size();i++){
+   stringstream ss;
+   ss << "../Images/";
+   ss << clsnme << '_' << i << ".jpg";
+   imwrite(ss.str(), store[i]);
+   cout << "written: " << ss.str() << endl;
+ }
+
   return 0;
 }
