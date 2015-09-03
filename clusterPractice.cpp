@@ -15,60 +15,43 @@
 using namespace cv;
 using namespace std;
 
+Mat reshapeCol(Mat in){
+  Mat points(in.rows*in.cols, 1,CV_32F);
+  int cnt = 0;
+  for(int i =0;i<in.rows;i++){
+    for(int j=0;j<in.cols;j++){
+      points.at<float>(cnt, 0) = in.at<Vec3b>(i,j)[0];
+      cnt++;
+    }
+  }
+  return points;
+}
 
 int main(){
   cout << "Start.." << endl;
+  // Cluster the same image in a stack then on it's own and compare results
 
-  VideoCapture cap;
-  cap.open("../testVid.mp4");
-  if(!cap.isOpened()){
-    cout << "video unable to be opened. Exiting.." << endl;
-    exit(1);
-  }
+  Mat in = imread("../Lena.png", CV_LOAD_IMAGE_GRAYSCALE);
+  Mat test1 = reshapeCol(in);
 
+  int dictSize = 10;
+  int attempts = 100;
+  int flags = KMEANS_RANDOM_CENTERS;
+  TermCriteria tc(TermCriteria::MAX_ITER + TermCriteria::EPS, 1000000, 0.0000001);
 
-  vector<Mat> store;
-  Mat img;
-  namedWindow("CurrentImg", CV_WINDOW_AUTOSIZE);
-  namedWindow("FrameCount", CV_WINDOW_AUTOSIZE);
-  int w_width = 200;
-  int w_height = 75;
+  BOWKMeansTrainer bowTrainer(dictSize, tc, attempts, flags);
+  bowTrainer.add(test1);
+  Mat output = bowTrainer.cluster();
+  cout << "These are the clusters: " << output << endl;
 
-  for(int i=0;i<cap.get(CV_CAP_PROP_FRAME_COUNT);i++){
-    cap >> img;
-    Mat frame = Mat(w_height, w_width, CV_8UC3, Scalar(255,255,255));
+  BOWKMeansTrainer bowTrainer1(dictSize, tc, attempts, flags);
+  bowTrainer1.add(test1);
+  Mat output1 = bowTrainer1.cluster();
+  cout << "These are the clusters: " << output1 << endl;
 
-    double fnum = cap.get(CV_CAP_PROP_POS_FRAMES);
+  double compVal = compareHist(output1, output, CV_COMP_CHISQR);
 
-    stringstream ss;
-    ss << "Frame: " << fnum;
-    Size textsize = getTextSize(ss.str(), FONT_HERSHEY_SCRIPT_SIMPLEX, 1, 2, 0);
-    Point org((w_width - textsize.width)/2, (w_height - textsize.height)/2+20);
-    putText(frame, ss.str(), org, CV_FONT_HERSHEY_COMPLEX, 1, Scalar(0, 0, 0), 2, 8 );
-
-    imshow("FrameCount", frame);
-    imshow("CurrentImg", img);
-    cout << "This is the size: " << img.size() << " and i count: " << i << endl;
-    char c = waitKey(30000);
-    if(c=='s'){
-      store.push_back(img.clone());
-    }else if(c=='q'){
-      break;
-    }
- }
-
-  cout << "what is the name of that class? " << endl;
-  string clsnme;
-  cin >> clsnme;
-  cout << "This was the class name: " << clsnme << endl;
-
- for(int i=0;i<store.size();i++){
-   stringstream ss;
-   ss << "../Images/";
-   ss << clsnme << '_' << i << ".jpg";
-   imwrite(ss.str(), store[i]);
-   cout << "written: " << ss.str() << endl;
- }
+  cout << "This is the compare value: " << compVal << endl;
 
   return 0;
 }
