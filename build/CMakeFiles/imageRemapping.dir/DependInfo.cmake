@@ -4,7 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/james-tt/Desktop/MyFilterbankCode/clusterPractice/clusterPractice.cpp" "/home/james-tt/Desktop/MyFilterbankCode/clusterPractice/build/CMakeFiles/clusterPractice.dir/clusterPractice.cpp.o"
+  "/home/james-tt/Desktop/MyFilterbankCode/imageRemapping/imageRemapping.cpp" "/home/james-tt/Desktop/MyFilterbankCode/imageRemapping/build/CMakeFiles/imageRemapping.dir/imageRemapping.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 

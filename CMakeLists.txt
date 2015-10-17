@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-PROJECT(clusterPractice)
+PROJECT(imageRemapping)
 
 FIND_PACKAGE(OpenCV REQUIRED)
 FIND_PACKAGE(Boost COMPONENTS system filesystem REQUIRED)
@@ -13,7 +13,7 @@ if(Boost_FOUND)
 
   INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
-  ADD_EXECUTABLE(${PROJECT_NAME} clusterPractice.cpp)
+  ADD_EXECUTABLE(${PROJECT_NAME} imageRemapping.cpp)
 
   TARGET_LINK_LIBRARIES(${PROJECT_NAME}
     ${OpenCV_LIBS}

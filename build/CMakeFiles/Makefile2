@@ -47,44 +47,44 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/james-tt/Desktop/MyFilterbankCode/clusterPractice
+CMAKE_SOURCE_DIR = /home/james-tt/Desktop/MyFilterbankCode/imageRemapping
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/james-tt/Desktop/MyFilterbankCode/clusterPractice/build
+CMAKE_BINARY_DIR = /home/james-tt/Desktop/MyFilterbankCode/imageRemapping/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/clusterPractice.dir
+# Target rules for target CMakeFiles/imageRemapping.dir
 
 # All Build rule for target.
-CMakeFiles/clusterPractice.dir/all:
-	$(MAKE) -f CMakeFiles/clusterPractice.dir/build.make CMakeFiles/clusterPractice.dir/depend
-	$(MAKE) -f CMakeFiles/clusterPractice.dir/build.make CMakeFiles/clusterPractice.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/james-tt/Desktop/MyFilterbankCode/clusterPractice/build/CMakeFiles  1
-	@echo "Built target clusterPractice"
-.PHONY : CMakeFiles/clusterPractice.dir/all
+CMakeFiles/imageRemapping.dir/all:
+	$(MAKE) -f CMakeFiles/imageRemapping.dir/build.make CMakeFiles/imageRemapping.dir/depend
+	$(MAKE) -f CMakeFiles/imageRemapping.dir/build.make CMakeFiles/imageRemapping.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/james-tt/Desktop/MyFilterbankCode/imageRemapping/build/CMakeFiles  1
+	@echo "Built target imageRemapping"
+.PHONY : CMakeFiles/imageRemapping.dir/all
 
 # Include target in all.
-all: CMakeFiles/clusterPractice.dir/all
+all: CMakeFiles/imageRemapping.dir/all
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/clusterPractice.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/james-tt/Desktop/MyFilterbankCode/clusterPractice/build/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/clusterPractice.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/james-tt/Desktop/MyFilterbankCode/clusterPractice/build/CMakeFiles 0
-.PHONY : CMakeFiles/clusterPractice.dir/rule
+CMakeFiles/imageRemapping.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/james-tt/Desktop/MyFilterbankCode/imageRemapping/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/imageRemapping.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/james-tt/Desktop/MyFilterbankCode/imageRemapping/build/CMakeFiles 0
+.PHONY : CMakeFiles/imageRemapping.dir/rule
 
 # Convenience name for target.
-clusterPractice: CMakeFiles/clusterPractice.dir/rule
-.PHONY : clusterPractice
+imageRemapping: CMakeFiles/imageRemapping.dir/rule
+.PHONY : imageRemapping
 
 # clean rule for target.
-CMakeFiles/clusterPractice.dir/clean:
-	$(MAKE) -f CMakeFiles/clusterPractice.dir/build.make CMakeFiles/clusterPractice.dir/clean
-.PHONY : CMakeFiles/clusterPractice.dir/clean
+CMakeFiles/imageRemapping.dir/clean:
+	$(MAKE) -f CMakeFiles/imageRemapping.dir/build.make CMakeFiles/imageRemapping.dir/clean
+.PHONY : CMakeFiles/imageRemapping.dir/clean
 
 # clean rule for target.
-clean: CMakeFiles/clusterPractice.dir/clean
+clean: CMakeFiles/imageRemapping.dir/clean
 .PHONY : clean
 
 #=============================================================================

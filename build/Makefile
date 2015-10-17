@@ -39,10 +39,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/james-tt/Desktop/MyFilterbankCode/clusterPractice
+CMAKE_SOURCE_DIR = /home/james-tt/Desktop/MyFilterbankCode/imageRemapping
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/james-tt/Desktop/MyFilterbankCode/clusterPractice/build
+CMAKE_BINARY_DIR = /home/james-tt/Desktop/MyFilterbankCode/imageRemapping/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,9 +69,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/james-tt/Desktop/MyFilterbankCode/clusterPractice/build/CMakeFiles /home/james-tt/Desktop/MyFilterbankCode/clusterPractice/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/james-tt/Desktop/MyFilterbankCode/imageRemapping/build/CMakeFiles /home/james-tt/Desktop/MyFilterbankCode/imageRemapping/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/james-tt/Desktop/MyFilterbankCode/clusterPractice/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/james-tt/Desktop/MyFilterbankCode/imageRemapping/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -99,41 +99,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named clusterPractice
+# Target rules for targets named imageRemapping
 
 # Build rule for target.
-clusterPractice: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 clusterPractice
-.PHONY : clusterPractice
+imageRemapping: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 imageRemapping
+.PHONY : imageRemapping
 
 # fast build rule for target.
-clusterPractice/fast:
-	$(MAKE) -f CMakeFiles/clusterPractice.dir/build.make CMakeFiles/clusterPractice.dir/build
-.PHONY : clusterPractice/fast
+imageRemapping/fast:
+	$(MAKE) -f CMakeFiles/imageRemapping.dir/build.make CMakeFiles/imageRemapping.dir/build
+.PHONY : imageRemapping/fast
 
-clusterPractice.o: clusterPractice.cpp.o
-.PHONY : clusterPractice.o
+imageRemapping.o: imageRemapping.cpp.o
+.PHONY : imageRemapping.o
 
 # target to build an object file
-clusterPractice.cpp.o:
-	$(MAKE) -f CMakeFiles/clusterPractice.dir/build.make CMakeFiles/clusterPractice.dir/clusterPractice.cpp.o
-.PHONY : clusterPractice.cpp.o
+imageRemapping.cpp.o:
+	$(MAKE) -f CMakeFiles/imageRemapping.dir/build.make CMakeFiles/imageRemapping.dir/imageRemapping.cpp.o
+.PHONY : imageRemapping.cpp.o
 
-clusterPractice.i: clusterPractice.cpp.i
-.PHONY : clusterPractice.i
+imageRemapping.i: imageRemapping.cpp.i
+.PHONY : imageRemapping.i
 
 # target to preprocess a source file
-clusterPractice.cpp.i:
-	$(MAKE) -f CMakeFiles/clusterPractice.dir/build.make CMakeFiles/clusterPractice.dir/clusterPractice.cpp.i
-.PHONY : clusterPractice.cpp.i
+imageRemapping.cpp.i:
+	$(MAKE) -f CMakeFiles/imageRemapping.dir/build.make CMakeFiles/imageRemapping.dir/imageRemapping.cpp.i
+.PHONY : imageRemapping.cpp.i
 
-clusterPractice.s: clusterPractice.cpp.s
-.PHONY : clusterPractice.s
+imageRemapping.s: imageRemapping.cpp.s
+.PHONY : imageRemapping.s
 
 # target to generate assembly for a file
-clusterPractice.cpp.s:
-	$(MAKE) -f CMakeFiles/clusterPractice.dir/build.make CMakeFiles/clusterPractice.dir/clusterPractice.cpp.s
-.PHONY : clusterPractice.cpp.s
+imageRemapping.cpp.s:
+	$(MAKE) -f CMakeFiles/imageRemapping.dir/build.make CMakeFiles/imageRemapping.dir/imageRemapping.cpp.s
+.PHONY : imageRemapping.cpp.s
 
 # Help Target
 help:
@@ -141,12 +141,12 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... clusterPractice"
 	@echo "... edit_cache"
+	@echo "... imageRemapping"
 	@echo "... rebuild_cache"
-	@echo "... clusterPractice.o"
-	@echo "... clusterPractice.i"
-	@echo "... clusterPractice.s"
+	@echo "... imageRemapping.o"
+	@echo "... imageRemapping.i"
+	@echo "... imageRemapping.s"
 .PHONY : help
 
 

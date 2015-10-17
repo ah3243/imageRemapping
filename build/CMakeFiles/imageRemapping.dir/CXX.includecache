@@ -6,15 +6,15 @@
 
 #IncludeRegexTransform: 
 
-/home/james-tt/Desktop/MyFilterbankCode/clusterPractice/clusterPractice.cpp
+/home/james-tt/Desktop/MyFilterbankCode/imageRemapping/imageRemapping.cpp
 opencv2/highgui/highgui.hpp
-/home/james-tt/Desktop/MyFilterbankCode/clusterPractice/opencv2/highgui/highgui.hpp
+/home/james-tt/Desktop/MyFilterbankCode/imageRemapping/opencv2/highgui/highgui.hpp
 opencv2/imgproc/imgproc.hpp
-/home/james-tt/Desktop/MyFilterbankCode/clusterPractice/opencv2/imgproc/imgproc.hpp
+/home/james-tt/Desktop/MyFilterbankCode/imageRemapping/opencv2/imgproc/imgproc.hpp
 opencv2/opencv.hpp
 -
 opencv2/core/core.hpp
-/home/james-tt/Desktop/MyFilterbankCode/clusterPractice/opencv2/core/core.hpp
+/home/james-tt/Desktop/MyFilterbankCode/imageRemapping/opencv2/core/core.hpp
 iostream
 -
 stdlib.h
