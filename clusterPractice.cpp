@@ -16,6 +16,9 @@
 using namespace cv;
 using namespace std;
 
+#define verbose 0
+#define showImgs 0
+
 // Check for input dir, exit if none
 void checkInDir(string inDir){
   if(!boost::filesystem::exists(inDir) && boost::filesystem::is_directory(inDir)){
@@ -23,25 +26,24 @@ void checkInDir(string inDir){
     exit(1);
   }
 }
-// Check for Dir if not exists create it
+// Regerate Output Dir
 void checkImgDirs(string outDir){
-  if(!boost::filesystem::exists(outDir)){
-    if(boost::filesystem::create_directory(outDir)){
+  boost::filesystem::remove_all(outDir);
+  if(boost::filesystem::create_directory(outDir)){
+    if(verbose){
       cout << "Directory Created: " << outDir << endl;
-    }else{
-      cout << "Directory creation failed" << outDir << endl;
     }
   }else{
-    cout << "Output Dir Already Exists" << endl;
+    if(verbose){
+      cout << "Directory creation failed" << outDir << endl;
+    }
   }
 }
 
 // Extract Class Names from Dir Paths
-void extractClsNmes(vector<string> paths, vector<string> &clsNmes){
-  for(int j=0;j<paths.size();j++){
-    size_t found = paths[j].find_last_of('/');
-    clsNmes.push_back(paths[j].substr(found+1));
-  }
+string extractClsNmes(string path){
+  size_t found = path.find_last_of('/');
+  return path.substr(found+1);
 }
 
 // Get all Dirs at path
@@ -57,12 +59,65 @@ void getDirNmes(string inDir, vector<string>& clsPaths){
   }
 }
 
-// Generates Individual output Class Folders if they dont exist
+// Creates individual output Class Folders
 void checkClsoutDirs(string dir, vector<string> clsNmes){
   for(int j=0;j<clsNmes.size();j++){
     stringstream ss;
     ss << dir << "/" << clsNmes[j];
     checkImgDirs(ss.str());
+  }
+}
+
+// getting all .jpg fileNames in directory
+void getImgsinDir(string inDir, vector<string> &filePaths){
+  // Loop through input dir
+  boost::filesystem::directory_iterator end_iter;
+  for( boost::filesystem::directory_iterator dir_iter(inDir) ; dir_iter != end_iter ; ++dir_iter)
+  {
+    // Confirm file is regular file
+    if (boost::filesystem::is_regular_file(*dir_iter) )
+    {
+      // Confirm file is .jpg
+      if(dir_iter->path().extension().string() == ".jpg"){
+        if(verbose){
+          cout << "This is the filename: " << *dir_iter << endl;
+        }
+        // Save to vector<string>
+        filePaths.push_back(dir_iter->path().string());
+      }
+    }
+  }
+}
+
+void importImages(map<string, map<string, Mat> > &ClassImgs, vector<string> clsPaths){
+  if(verbose){
+    cout << "Getting Classes." << endl;
+  }
+  // Get all image Paths
+  map< string, vector<string> > filePaths;
+  for(int i=0;i<clsPaths.size();i++){
+    // Get Overall Class Name
+    string cls;
+    cls = extractClsNmes(clsPaths[i]);
+    // Get all FileNames from specific Class
+    vector<string> a;
+    getImgsinDir(clsPaths[i], a);
+    filePaths[cls] = a;
+  }
+  // Import Images
+  for(auto const ent : filePaths){
+    map<string, Mat> tmpClsImgs; // Store each images fileName and Mat
+    for(int j=0;j<ent.second.size();j++){
+      // Read in and save image to Mat
+      Mat tmp;
+      tmp = imread(ent.second[j], CV_LOAD_IMAGE_COLOR);
+      string fileName = extractClsNmes(ent.second[j]); // Store individual File Name
+      if(verbose){
+        cout << "This is the fileName: " << fileName << endl;
+      }
+      tmpClsImgs[fileName] = tmp; // Save each image to map with filename
+    }
+    ClassImgs[ent.first] = tmpClsImgs; // save each classes files to map
   }
 }
 
@@ -73,16 +128,20 @@ int main(int argc, char** argv){
   vector<string> clsNmes;
   checkInDir(inDir); // Check for input img Dir
 
-  getDirNmes(inDir, clsPaths);
-  extractClsNmes(clsPaths, clsNmes);
-
-  cout << "This is the size: " << clsPaths.size() << endl;
+  getDirNmes(inDir, clsPaths); // Get all class dir paths
   for(int i=0;i<clsPaths.size();i++){
-    cout << "ClassPaths: " << clsPaths[i] << endl;
-    cout << "Classes: " << clsNmes[i] << endl;
+    clsNmes.push_back(extractClsNmes(clsPaths[i])); // Extract Class Names from Paths
   }
-  checkImgDirs(outDir); // Check for output Dir
-  checkClsoutDirs(outDir, clsNmes); // Check for individual Class Ouput Dirs
+  if(verbose){
+    cout << "This is the number of Classes: " << clsPaths.size() << endl;
+  }
+
+  checkImgDirs(outDir); // Remove old output Dir and create New Dir
+  checkClsoutDirs(outDir, clsNmes); // Create new individual class output Dirs
+
+  // Import All Images
+  map<string, map<string, Mat> > ClassImgs; // Multiple Classes < each Class Name, multiple images per class < each imageName, Image > >
+  importImages(ClassImgs, clsPaths); // Import all images and store
 
   // Create variables
   Mat cameraMatrix, distCoeffs, map1, map2;
@@ -106,35 +165,35 @@ int main(int argc, char** argv){
 
   // Create remap variables
   Mat view, rview;
-  string fileNme = "/board_";
-  string extension = ".jpg";
 
   // Create display Windows
   namedWindow("before", 0);
   namedWindow("after", 0);
 
-  // Loop through imgs in dir
-  for(int i=1;i<=15;i++){
-    stringstream ss;
-    ss << inDir << fileNme << i << extension;
-    cout << "This is the inDir: " << ss.str() << endl;
-    view = imread(ss.str(), 1);
-    cout << "this is the size: " << view.size() << endl;
-    imshow("before", view);
-    // Remap image
-   remap(view, rview, map1, map2, INTER_LINEAR);
-   imshow("after", rview);
-   ss.str("");
-   ss << outDir << fileNme << i << extension;
-   imwrite(ss.str(), rview);
+  // map<string, map<string, Mat> > ClassImgs; // Multiple Classes < each Class Name, multiple images per class < each imageName, Image > >
 
-    char c = waitKey(500);
-    if(c=='q'){
-      break;
+  // Loop through imgs in dir
+  for(auto const ent1 : ClassImgs){
+    cout << "going through Class: " << ent1.first << endl;
+    for(auto const ent2 : ent1.second){
+      stringstream ss;
+      cout << "this is the FileNme: " << ent2.first << " and size: " << ent2.second.size() << endl;
+      view = ent2.second;
+      // Remap image
+      remap(view, rview, map1, map2, INTER_LINEAR);
+      if(showImgs){
+       imshow("before", view);
+       imshow("after", rview);
+        waitKey(1000);
+      }
+      ss << outDir << "/" << ent1.first << "/" << ent2.first;
+      imwrite(ss.str(), rview);
+      char c = waitKey(30);
+      if(c=='q'){
+        break;
+      }
     }
   }
-
-
 
   return 0;
 }
